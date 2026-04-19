@@ -1,7 +1,7 @@
 {
   "name": "Mindshine",
   "description": "A personal web ring of vibe-coded projects",
-  "url": "https://mindshine-webring.up.railway.app",
+  "url": "https://mindshine-webring-production.up.railway.app",
   "join": {
     "enabled": false,
     "label": "Add your project"
