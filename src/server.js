@@ -122,6 +122,41 @@ app.post('/api/submit', (req, res) => {
   res.json({ ok: true, message: 'Submission received! It will be reviewed before being added.' });
 });
 
+// --- Admin: sync members from mission-command ---
+
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
+
+function checkSecret(req, res) {
+  if (!ADMIN_SECRET) return false; // no secret set = local dev, allow all
+  const provided = req.headers['x-admin-secret'] || req.body?.secret;
+  if (provided !== ADMIN_SECRET) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return true;
+  }
+  return false;
+}
+
+app.post('/api/members/sync', (req, res) => {
+  if (checkSecret(req, res)) return;
+  const { name, url, description, remove } = req.body;
+  if (!url) return res.status(400).json({ error: 'url required' });
+  if (!remove && !name) return res.status(400).json({ error: 'name required' });
+
+  let members = loadMembers();
+  const needle = normalizeUrl(url);
+
+  if (remove) {
+    members = members.filter(m => normalizeUrl(m.url) !== needle);
+  } else {
+    const idx = members.findIndex(m => normalizeUrl(m.url) === needle);
+    const entry = { name, url: normalizeUrl(url), description: description || '' };
+    if (idx >= 0) members[idx] = entry; else members.push(entry);
+  }
+
+  writeFileSync(join(ROOT, 'members.json'), JSON.stringify(members, null, 2));
+  res.json({ ok: true, members });
+});
+
 // --- Serve index for all other routes (SPA-style) ---
 app.get('*', (req, res) => {
   res.sendFile(join(ROOT, 'public', 'index.html'));
