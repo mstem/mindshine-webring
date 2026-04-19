@@ -1,0 +1,14 @@
+{
+  "name": "Mindshine",
+  "description": "A personal web ring of vibe-coded projects",
+  "url": "https://mindshine-webring.up.railway.app",
+  "join": {
+    "enabled": false,
+    "label": "Add your project"
+  },
+  "theme": {
+    "accent": "#34d399",
+    "background": "rgba(10, 10, 20, 0.9)",
+    "text": "#ffffff"
+  }
+}

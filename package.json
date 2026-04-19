@@ -1,0 +1,13 @@
+{
+  "name": "webring",
+  "version": "1.0.0",
+  "description": "Embeddable web ring for vibe-coded projects",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
